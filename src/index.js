@@ -1,6 +1,6 @@
 console.log('coding is ready');
 import { data } from './data';
-import { isValid } from './utils';
+import { isValid, formatMoney } from './utils';
 import './styles.css';
 
 let filteredData = data;
@@ -14,6 +14,12 @@ const state = {
     price: 0,
     category: '',
   },
+};
+
+const getTotal = () => {
+  return filteredData.reduce((acc, cur) => {
+    return acc + cur.price;
+  }, 0);
 };
 
 const getCheapestItem = () => {
@@ -106,8 +112,13 @@ const buildTable = () => {
     '<tr><th>Products</th><th>Size</th><th>Price</th><th>Category</th><th>Delete</th></tr>';
   filteredData.map((item) => {
     const { name, id, price, category, size } = item;
-    html += `<tr><td>${name}</td><td>${size}</td><td>${price}</td><td>${category}</td><td id="tr-${id}" style="cursor: pointer;" data-delete="${id}">Delete</td></tr>`;
+    html += `<tr><td>${name}</td><td>${size}</td><td>${formatMoney(
+      price
+    )}</td><td>${category}</td><td id="tr-${id}" style="cursor: pointer;" data-delete="${id}">Delete</td></tr>`;
   });
+  html += `<tr><td colspan="2"></td><td>${formatMoney(
+    getTotal()
+  )}</td><td colspan="2"></td></tr>`;
   html += '</table>';
   document.getElementById('items').innerHTML = html;
   buildDeleteLinks();
