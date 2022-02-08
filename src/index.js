@@ -32,6 +32,12 @@ const getCheapestItem = () => {
   }, 9999);
 };
 
+const clearForm = () => {
+  Object.keys(state.currentItem).map((key) => {
+    document.getElementById(key).value = '';
+  });
+};
+
 const displayCheapestItem = () => {
   const parent = document.getElementById('stats');
   const divName = 'cheapest-div';
@@ -212,6 +218,7 @@ const saveItem = () => {
   state.items = copiedItems;
   filteredData = copiedItems;
   buildTable();
+  clearForm();
 };
 
 const saveButton = document.getElementById('save-item');
