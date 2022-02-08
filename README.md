@@ -42,3 +42,9 @@ background: #7b0c6e;
 background: -webkit-linear-gradient(top left, #7b0c6e, #626cbe);
 background: -moz-linear-gradient(top left, #7b0c6e, #626cbe);
 background: linear-gradient(to bottom right, #7b0c6e, #626cbe);
+
+setup eslint
+npm install --save-dev eslint eslint-config-prettier eslint-plugin-import 
+
+now we want to see linting error in webpack output so we need another plugin
+npm install eslint-webpack-plugin --save-dev
