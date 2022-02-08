@@ -163,6 +163,11 @@ Next we create a .eslintrc.json file to hold our linting configuration:
 }
 ```
 
+then lets add a linting script to our package.json
+```js
+"lint": "eslint src/*.js",
+```
+
 stub out our index.html
 
 now we are going to add some data to our app:
@@ -224,3 +229,58 @@ finally we will add a svg transh icon for our delets
 
 svg path:
 M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z
+
+If we want to use any async functions we will need another plugin
+
+```js
+npm install @babel/plugin-transform-runtime
+```
+
+then we are going to need a .babelrc file with this content
+
+```js
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": ["@babel/transform-runtime"]
+}
+```
+
+the last change we are going to make is to add an express server to our app to supply our data
+
+for this we are going to need a few more packages
+
+```js
+npm install express cors avion
+```
+
+now we are going to create a server folder in the root and add a file server.js
+
+it will look like this:
+
+```js
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+const port = 3000;
+
+app.use(cors());
+
+const data = require('./data');
+
+app.get('/', (req, res) => {
+  res.send({ error: 0, success: true, data });
+});
+
+app.listen(port, () => {
+  console.log(`server is listening on port ${port}`);
+});
+```
+
+once we have that we need to add a start script to the package.json
+
+```js
+"server": "node server/server.js"
+```
+
+now we can get the 
