@@ -50,3 +50,38 @@ now we want to see linting error in webpack output so we need another plugin
 npm install eslint-webpack-plugin --save-dev
 
 stub out our index.html
+
+now we are going to add some data to out app:
+
+```js
+export const data = [
+  { id: 1, name: 'apple', price: 0.99, size: 'each', category: 'fruit' },
+  { id: 2, name: 'bananna', price: 1.1, size: 'each', category: 'fruit' },
+  { id: 3, name: 'grapes', price: 1.99, size: 'bundle', category: 'fruit' },
+  { id: 4, name: 'apple', price: 0.89, size: 'each', category: 'fruit' },
+  {
+    id: 5,
+    name: 'Dr. Pepper',
+    price: 1.09,
+    size: '12 oz',
+    category: 'beverages',
+  },
+  { id: 6, name: 'Mt. Dew', price: 4.99, size: '12 pk', category: 'beverages' },
+  { id: 7, name: 'Coke', price: 1.79, size: '2 Liter', category: 'beverages' },
+  { id: 8, name: 'Pepsi', price: 1.79, size: '2 Liter', category: 'beverages' },
+  { id: 9, name: 'Tic Tacs', price: 2.99, size: '12 oz', category: 'candy' },
+  { id: 10, name: 'Snickers', price: 1.59, size: 'bar', category: 'candy' },
+  { id: 11, name: 'Almond Joy', price: 1.69, size: 'bar', category: 'candy' },
+];
+
+``
+
+let's put that in a file data data.js in the src folder
+
+now add a utils.js file and create a function called isValid to test that something is truthy
+
+
+now we are going to set a placeholder for filteredData and create some state
+
+
+now lets create a little style for our app
