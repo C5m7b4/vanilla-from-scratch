@@ -85,3 +85,10 @@ now we are going to set a placeholder for filteredData and create some state
 
 
 now lets create a little style for our app
+
+then we are going to add some state
+
+then lets add a grid so we can see our data
+
+then add a function to the Array prototype so we can get unique values
+and after that we will be able to filter our grid by items in category
