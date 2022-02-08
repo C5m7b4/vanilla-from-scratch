@@ -36,6 +36,7 @@ h2 {
   margin-top: 10px;
   background-color: #e0b414;
   color: #000;
+  cursor: pointer;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease;
 }
@@ -82,4 +83,34 @@ label {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+table {
+  border: 1px solie black;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+th {
+  text-align: left;
+  background-color: cornflowerblue;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 5px;
+}
+
+tr {
+  border-bottom: 1px solid black;
+}
+
+tr:nth-child(even) {
+  background-color: darkgrey;
+}
+
+tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+td {
+  padding: 5px;
 }
