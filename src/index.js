@@ -6,6 +6,34 @@ import avion from 'avion';
 
 let data = [];
 
+const state = {
+  items: data,
+  currentItem: {
+    name: '',
+    size: '',
+    price: 0,
+    category: '',
+  },
+};
+
+async function updateData() {
+  let json = await avion({
+    method: 'POST',
+    cors: true,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    url: 'http://localhost:3000',
+    data: {
+      name: state.currentItem.name,
+      size: state.currentItem.size,
+      price: state.currentItem.price,
+      category: state.currentItem.category,
+    },
+  });
+  return json;
+}
+
 async function getData() {
   let json = await avion({
     method: 'GET',
@@ -24,6 +52,7 @@ getData()
     if (j.error === 0) {
       data = j.data;
       filteredData = j.data;
+      state.items = j.data;
       buildTable();
     } else {
       console.log(j.msg);
@@ -34,17 +63,6 @@ getData()
   });
 
 let filteredData = data;
-console.log(filteredData);
-
-const state = {
-  items: data,
-  currentItem: {
-    name: '',
-    size: '',
-    price: 0,
-    category: '',
-  },
-};
 
 const getTotal = () => {
   return filteredData.reduce((acc, cur) => {
@@ -161,6 +179,43 @@ for (let input of inputs) {
   input.addEventListener('change', changeState);
 }
 
+Array.prototype.unique = function (field) {
+  const newArray = [];
+  this.forEach((record) => {
+    const { [field]: targetField } = record;
+    if (!newArray.includes(targetField)) {
+      newArray.push(targetField);
+    }
+  });
+  return newArray;
+};
+
+const buildFilterBox = () => {
+  const categories = data.unique('category');
+  let html =
+    '<select id="category-filter"><option value="0">Select a category to filter by</option>';
+  categories.map((c) => {
+    html += `<option value="${c}">${c}</option>`;
+  });
+  html += '</select>';
+  document.getElementById('filter').innerHTML = html;
+  const newSelect = document.getElementById('category-filter');
+  newSelect.addEventListener('change', handleFilterChange);
+};
+
+const createItemCategory = () => {
+  const categories = data.unique('category');
+  let html = `<select id="category"><option value="0">Select a Category</option>`;
+  categories.map((c) => {
+    html += `<option value="${c}">${c}</option>`;
+  });
+  html += '</select';
+  document.getElementById('item-category').innerHTML = html;
+  const newSelect = document.getElementById('category');
+  newSelect.addEventListener('change', changeState);
+};
+createItemCategory();
+
 const buildTable = () => {
   let html = `<table style="width: 90%; margin: 20px auto; color: #000">`;
   html +=
@@ -180,20 +235,11 @@ const buildTable = () => {
   displayCheapestItem();
   displayMostExpensive();
   addSvg();
+  buildFilterBox();
+  createItemCategory();
 };
 
 buildTable();
-
-Array.prototype.unique = function (field) {
-  const newArray = [];
-  this.forEach((record) => {
-    const { [field]: targetField } = record;
-    if (!newArray.includes(targetField)) {
-      newArray.push(targetField);
-    }
-  });
-  return newArray;
-};
 
 const handleFilterChange = (e) => {
   if (e.target.value == '0') {
@@ -204,18 +250,6 @@ const handleFilterChange = (e) => {
   buildTable();
 };
 
-const buildFilterBox = () => {
-  const categories = data.unique('category');
-  let html =
-    '<select id="category-filter"><option value="0">Select a category to filter by</option>';
-  categories.map((c) => {
-    html += `<option value="${c}">${c}</option>`;
-  });
-  html += '</select>';
-  document.getElementById('filter').innerHTML = html;
-  const newSelect = document.getElementById('category-filter');
-  newSelect.addEventListener('change', handleFilterChange);
-};
 buildFilterBox();
 
 buildDeleteLinks();
@@ -269,20 +303,14 @@ const saveItem = () => {
   filteredData = copiedItems;
   buildTable();
   clearForm();
+  updateData()
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const saveButton = document.getElementById('save-item');
 saveButton.addEventListener('click', saveItem);
-
-const createItemCategory = () => {
-  const categories = data.unique('category');
-  let html = `<select id="category"><option value="0">Select a Category</option>`;
-  categories.map((c) => {
-    html += `<option value="${c}">${c}</option>`;
-  });
-  html += '</select';
-  document.getElementById('item-category').innerHTML = html;
-  const newSelect = document.getElementById('category');
-  newSelect.addEventListener('change', changeState);
-};
-createItemCategory();
