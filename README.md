@@ -19,4 +19,26 @@ Install html-webpack-plugin
 npm install --save-dev html-webpack-plugin
 
 add start to package.json
+"start": "webpack serve --open"
 Start project and we should get a webpage
+
+install MiniCssExtractPlugin
+npm install --save-dev mini-css-extract-plugin
+
+add rule for .js file to webpack.config.js
+install babel-loader and @babel/preset-env
+npm install --save-dev babel-loader @babel/preset-env
+
+add rule for .css file to webpack.config.js
+install css-loader
+npm install --save-dev css-loader
+
+add styles.css
+add google font to css and setup basic css styles
+import into index.js and test out a background
+
+here is our background:
+background: #7b0c6e;
+background: -webkit-linear-gradient(top left, #7b0c6e, #626cbe);
+background: -moz-linear-gradient(top left, #7b0c6e, #626cbe);
+background: linear-gradient(to bottom right, #7b0c6e, #626cbe);
