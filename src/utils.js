@@ -11,5 +11,6 @@ export const formatMoney = (input) => {
   if (right.length == 1) {
     right += '0';
   }
-  return `$${left}.${right}`;
+  const result = `${left}.${right}`;
+  return Number(result).toFixed(2);
 };
