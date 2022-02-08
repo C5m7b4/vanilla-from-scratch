@@ -48,3 +48,5 @@ npm install --save-dev eslint eslint-config-prettier eslint-plugin-import
 
 now we want to see linting error in webpack output so we need another plugin
 npm install eslint-webpack-plugin --save-dev
+
+stub out our index.html
