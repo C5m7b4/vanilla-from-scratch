@@ -194,9 +194,7 @@ let's put that in a file data data.js in the src folder
 
 now add a utils.js file and create a function called isValid to test that something is truthy
 
-
 now we are going to set a placeholder for filteredData and create some state
-
 
 now lets create a little style for our app
 
@@ -206,6 +204,23 @@ then lets add a grid so we can see our data
 
 then add a function to the Array prototype so we can get unique values
 and after that we will be able to filter our grid by items in category
+
+Next we will add a select field and have that filter the view of the grid, but keep the underlying data safe.
+
+then we are going to create some functions to retrieve the most expensive and the cheapest items in our filtered data
+
+then we are going to add the ability to delete some data
+
+We will also create a formatter for money so it looks nicer
+
+then we need to add a select field so when we create an item it can have a category assigned to it
+
+then we are going to write the code to create an item and then clear our form when we are done
+
+then we are going to add a total cell to the grid so we can see the total of all our items
+
+finally we will add a svg transh icon for our delets
+
 
 svg path:
 M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z
