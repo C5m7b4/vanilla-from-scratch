@@ -14,6 +14,7 @@ install prettier:
 ```js
 npm install --save-dev prettier
 ```
+
 create a prettier config
 
 install webpack-dev-server
@@ -164,6 +165,7 @@ Next we create a .eslintrc.json file to hold our linting configuration:
 ```
 
 then lets add a linting script to our package.json
+
 ```js
 "lint": "eslint src/*.js",
 ```
@@ -225,7 +227,6 @@ then we are going to write the code to create an item and then clear our form wh
 then we are going to add a total cell to the grid so we can see the total of all our items
 
 finally we will add a svg transh icon for our delets
-
 
 svg path:
 M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z
