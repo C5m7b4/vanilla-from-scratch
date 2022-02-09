@@ -140,3 +140,40 @@ select {
   justify-content: center;
   align-items: center;
 }
+
+.header-sort {
+  display: grid;
+  grid-template-columns: 1fr 20px;
+}
+
+.chevron {
+  cursor: pointer;
+}
+
+.chevron.down::before {
+  border-style: solid;
+  border-width: 0.25em 0.25em 0 0;
+  content: '';
+  display: inline-block;
+  height: 0.45em;
+  left: 0.25em;
+  position: relative;
+  top: 0.15em;
+  transform: rotate(135deg);
+  vertical-align: top;
+  width: 0.45em;
+}
+
+.chevron.top::before {
+  border-style: solid;
+  border-width: 0.25em 0.25em 0 0;
+  content: '';
+  display: inline-block;
+  height: 0.45em;
+  left: 0.25em;
+  position: relative;
+  top: 0.55em;
+  transform: rotate(-45deg);
+  vertical-align: top;
+  width: 0.45em;
+}
