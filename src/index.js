@@ -21,7 +21,10 @@ const state = {
     price: 0,
     category: '',
   },
-  priceSortDirection: 'down',
+  priceSortDirection: 'top',
+  nameSortDirection: 'top',
+  sizeSortDirection: 'top',
+  categorySortDirection: 'top',
   sortType: 'price',
 };
 
@@ -163,18 +166,27 @@ const addSvg = () => {
 };
 
 const compare = (a, b) => {
-  const fieldA = a.price;
-  const fieldB = b.price;
+  const fieldA = a[state.sortType];
+  const fieldB = b[state.sortType];
+
+  let descriptor = 'priceSortDirection';
+  if (state.sortType == 'name') {
+    descriptor = 'nameSortDirection';
+  } else if (state.sortType == 'size') {
+    descriptor = 'sizeSortDirection';
+  } else if (state.sortType == 'category') {
+    descriptor = 'categorySortDirection';
+  }
 
   let comparison = 0;
   if (fieldA > fieldB) {
-    if (state.priceSortDirection == 'down') {
+    if (state[descriptor] == 'down') {
       comparison = 1;
     } else {
       comparison = -1;
     }
   } else if (fieldA < fieldB) {
-    if (state.priceSortDirection == 'down') {
+    if (state[descriptor] == 'down') {
       comparison = -1;
     } else {
       comparison = 1;
@@ -189,24 +201,63 @@ const sortData = () => {
   buildTable();
 };
 
-const handleSortClick = () => {
-  const caret = document.getElementById('price-caret');
+const handleSortClick = (e) => {
+  const elementId = e.target.id;
+  const caret = document.getElementById(elementId);
   caret.classList.remove('top');
   caret.classList.remove('down');
-  sortData();
-  if (state.priceSortDirection == 'down') {
-    state.priceSortDirection = 'top';
-    caret.classList.add('top');
-  } else {
-    state.priceSortDirection = 'down';
-    caret.classList.add('down');
+
+  if (elementId.substring(0, 4) == 'pric') {
+    state.sortType = 'price';
+    if (state.priceSortDirection == 'down') {
+      state.priceSortDirection = 'top';
+      caret.classList.add('top');
+    } else {
+      state.priceSortDirection = 'down';
+      caret.classList.add('down');
+    }
+  } else if (elementId.substring(0, 4) == 'name') {
+    state.sortType = 'name';
+    if (state.nameSortDirection == 'down') {
+      state.nameSortDirection = 'top';
+      caret.classList.add('top');
+    } else {
+      state.nameSortDirection = 'down';
+      caret.classList.add('down');
+    }
+  } else if (elementId.substring(0, 4) == 'size') {
+    state.sortType = 'size';
+    if (state.sizeSortDirection == 'down') {
+      state.sizeSortDirection = 'top';
+      caret.classList.add('top');
+    } else {
+      state.sizeSortDirection = 'down';
+      caret.classList.add('down');
+    }
+  } else if (elementId.substring(0, 4) == 'cate') {
+    state.sortType = 'category';
+    if (state.categorySortDirection == 'down') {
+      state.categorySortDirection = 'top';
+      caret.classList.add('top');
+    } else {
+      state.categorySortDirection = 'down';
+      caret.classList.add('down');
+    }
   }
+
+  sortData();
   caret.removeEventListener('click', handleSortClick);
 };
 
 const assignCaretEvent = () => {
   const caret = document.getElementById('price-caret');
   caret.addEventListener('click', handleSortClick);
+  const descriptionCaret = document.getElementById('name-caret');
+  descriptionCaret.addEventListener('click', handleSortClick);
+  const sizeCaret = document.getElementById('size-caret');
+  sizeCaret.addEventListener('click', handleSortClick);
+  const categoryCaret = document.getElementById('category-caret');
+  categoryCaret.addEventListener('click', handleSortClick);
 };
 
 const changeState = (element) => {
@@ -275,7 +326,11 @@ createItemCategory();
 
 const buildTable = () => {
   let html = `<table style="width: 90%; margin: 20px auto; color: #000">`;
-  html += `<tr><th>Products</th><th>Size</th><th class="header-sort"><span>Price</span><span id="price-caret" class="chevron ${state.priceSortDirection}"></span></th><th>Category</th><th>Delete</th></tr>`;
+  html += `<tr>`;
+  html += `<th class="header-sort"><span>Products</span><span id="name-caret" class="chevron ${state.nameSortDirection}"></span></th>`;
+  html += `<th><span style="width: 80%;">Size</span><span style="width: 20%; float: right; text-align: right; margin-right: 8px" id="size-caret" class="chevron ${state.sizeSortDirection}"></span></th>`;
+  html += `<th class="header-sort"><span>Price</span><span id="price-caret" class="chevron ${state.priceSortDirection}"></span></th>`;
+  html += `<th><span style="width: 80%;">Category</span><span style="width: 20%; float: right; text-align: right; margin-right: 8px;" id="category-caret" class="chevron ${state.categorySortDirection}"></span></th><th>Delete</th></tr>`;
   filteredData.map((item) => {
     const { name, id, price, category, size } = item;
     html += `<tr><td>${name}</td><td>${size}</td><td>${formatMoney(
