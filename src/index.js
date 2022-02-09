@@ -4,6 +4,13 @@ import { isValid, formatMoney } from './utils';
 import './styles.css';
 import avion from 'avion';
 
+// we need to add an event that will let us know when the data is finished loading
+const dataLoaded = new CustomEvent('onDataLoaded');
+window.addEventListener('onDataLoaded', () => {
+  console.log('onDataLoaded has been dispatched');
+  runSampleCode();
+});
+
 let data = [];
 
 const state = {
@@ -55,6 +62,7 @@ getData()
       data = j.data;
       filteredData = j.data;
       state.items = j.data;
+      window.dispatchEvent(dataLoaded);
       buildTable();
     } else {
       console.log(j.msg);
@@ -314,38 +322,6 @@ const deleteItem = (id) => {
   }
 };
 
-// lets add curry to the mix
-const filterData = (property) => {
-  return function (value) {
-    return data.filter((i) => i[property] == value);
-  };
-};
-
-const curriedFilter = filterData('category');
-const fruits = curriedFilter('fruit');
-const bevs = curriedFilter('beverages');
-const candy = curriedFilter('candy');
-console.log('fruits', fruits);
-console.log('bevs', bevs);
-console.log('candy', candy);
-
-const findCategoryMostExpensiveItem = (array) => {
-  return array.reduce((acc, cur) => {
-    return acc.price > cur.price ? acc : cur;
-  }, 0);
-};
-
-const compose =
-  (...fns) =>
-  (...args) =>
-    fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0];
-
-const pipedFn = compose(
-  findCategoryMostExpensiveItem,
-  curriedFilter
-)('beverages');
-console.log(pipedFn);
-
 const saveItem = () => {
   const copiedItems = [...state.items, state.currentItem];
   state.items = copiedItems;
@@ -363,3 +339,37 @@ const saveItem = () => {
 
 const saveButton = document.getElementById('save-item');
 saveButton.addEventListener('click', saveItem);
+
+function runSampleCode() {
+  // lets add curry to the mix
+  const filterData = (property) => {
+    return function (value) {
+      return data.filter((i) => i[property] == value);
+    };
+  };
+
+  const curriedFilter = filterData('category');
+  const fruits = curriedFilter('fruit');
+  const bevs = curriedFilter('beverages');
+  const candy = curriedFilter('candy');
+  console.log('fruits', fruits);
+  console.log('bevs', bevs);
+  console.log('candy', candy);
+
+  const findCategoryMostExpensiveItem = (array) => {
+    return array.reduce((acc, cur) => {
+      return acc.price > cur.price ? acc : cur;
+    }, 0);
+  };
+
+  const compose =
+    (...fns) =>
+    (...args) =>
+      fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0];
+
+  const pipedFn = compose(
+    findCategoryMostExpensiveItem,
+    curriedFilter
+  )('beverages');
+  console.log(pipedFn);
+}
