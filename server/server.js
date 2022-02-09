@@ -28,11 +28,14 @@ app.get('/', (req, res) => {
 
       var request = new sql.Request();
 
-      request.query('select * from products', function (err, recordset) {
-        if (err) console.log(err);
+      request.query(
+        'select * from products order by price desc',
+        function (err, recordset) {
+          if (err) console.log(err);
 
-        res.send({ error: 0, success: true, data: recordset.recordset });
-      });
+          res.send({ error: 0, success: true, data: recordset.recordset });
+        }
+      );
     });
   } catch (error) {
     res.send({ error: 1, success: false, msg: error.message });

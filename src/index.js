@@ -14,6 +14,8 @@ const state = {
     price: 0,
     category: '',
   },
+  priceSortDirection: 'down',
+  sortType: 'price',
 };
 
 async function updateData() {
@@ -152,6 +154,53 @@ const addSvg = () => {
   });
 };
 
+const compare = (a, b) => {
+  const fieldA = a.price;
+  const fieldB = b.price;
+
+  let comparison = 0;
+  if (fieldA > fieldB) {
+    if (state.priceSortDirection == 'down') {
+      comparison = 1;
+    } else {
+      comparison = -1;
+    }
+  } else if (fieldA < fieldB) {
+    if (state.priceSortDirection == 'down') {
+      comparison = -1;
+    } else {
+      comparison = 1;
+    }
+  }
+  return comparison;
+};
+
+const sortData = () => {
+  const sortedData = [...filteredData].sort(compare);
+  filteredData = sortedData;
+  buildTable();
+};
+
+const handleSortClick = () => {
+  const caret = document.getElementById('price-caret');
+  caret.classList.remove('top');
+  caret.classList.remove('down');
+  sortData();
+  if (state.priceSortDirection == 'down') {
+    state.priceSortDirection = 'top';
+    caret.classList.add('top');
+  } else {
+    state.priceSortDirection = 'down';
+    caret.classList.add('down');
+  }
+  caret.removeEventListener('click', handleSortClick);
+};
+
+const assignCaretEvent = () => {
+  const caret = document.getElementById('price-caret');
+  caret.addEventListener('click', handleSortClick);
+};
+
 const changeState = (element) => {
   const { id, value } = element.target;
   if (!isValid(value) || !isValid(id)) return;
@@ -218,8 +267,7 @@ createItemCategory();
 
 const buildTable = () => {
   let html = `<table style="width: 90%; margin: 20px auto; color: #000">`;
-  html +=
-    '<tr><th>Products</th><th>Size</th><th>Price</th><th>Category</th><th>Delete</th></tr>';
+  html += `<tr><th>Products</th><th>Size</th><th class="header-sort"><span>Price</span><span id="price-caret" class="chevron ${state.priceSortDirection}"></span></th><th>Category</th><th>Delete</th></tr>`;
   filteredData.map((item) => {
     const { name, id, price, category, size } = item;
     html += `<tr><td>${name}</td><td>${size}</td><td>${formatMoney(
@@ -237,6 +285,7 @@ const buildTable = () => {
   addSvg();
   buildFilterBox();
   createItemCategory();
+  assignCaretEvent();
 };
 
 buildTable();
