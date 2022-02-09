@@ -283,4 +283,4 @@ once we have that we need to add a start script to the package.json
 "server": "node server/server.js"
 ```
 
-now we can get the 
+now we can get the data from our api we just built
