@@ -19,7 +19,7 @@ var config = {
   },
 };
 
-app.get('/', (req, res) => {
+app.get('/products', (req, res) => {
   try {
     var sql = require('mssql');
 
@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
       var request = new sql.Request();
 
       request.query(
-        'select * from products order by price desc',
+        'select products.id, name, size, price, categories.category from products left join categories on products.category = categories.id order by price desc',
         function (err, recordset) {
           if (err) console.log(err);
 
@@ -39,6 +39,29 @@ app.get('/', (req, res) => {
     });
   } catch (error) {
     res.send({ error: 1, success: false, msg: error.message });
+  }
+});
+
+app.get('/categories', (req, res) => {
+  try {
+    var sql = require('mssql');
+
+    sql.connect(config, function (err) {
+      if (err) console.log(err);
+
+      var request = new sql.Request();
+
+      request.query(
+        'select * from categories order by category',
+        function (err, recordset) {
+          if (err) console.log(err);
+
+          res.send({ error: 0, success: true, data: recordset.recordset });
+        }
+      );
+    });
+  } catch (error) {
+    res.send({ error: 1, success: false, msg: error });
   }
 });
 

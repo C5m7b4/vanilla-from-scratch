@@ -1,7 +1,7 @@
-import { state } from './index';
+import { filteredData } from './index';
 
 export const addSvg = () => {
-  state.items.forEach((i) => {
+  filteredData.forEach((i) => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     svg.setAttribute('viewbox', '0 0 24 24');
@@ -20,7 +20,7 @@ export const addSvg = () => {
 };
 
 export const addEdit = () => {
-  state.items.forEach((i) => {
+  filteredData.forEach((i) => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     svg.setAttribute('viewbox', '0 0 30 30');

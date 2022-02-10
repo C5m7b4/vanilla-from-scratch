@@ -177,3 +177,58 @@ select {
   vertical-align: top;
   width: 0.45em;
 }
+
+.toast-container {
+  position: fixed;
+  z-index: 9999;
+  top: 20px;
+  right: 20px;
+}
+
+.toast-container .toast {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  min-width: 280px;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.15),
+    0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+  background-color: #00ff00;
+  color: #fff;
+}
+
+.toast-container .toast:hover {
+  box-shadow: 0 15px 20px -5px rgba(0, 0, 0 0.15),
+    0 15px 15px -5px rgba(0, 0, 0, 0.1);
+}
+
+.t-title {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  color: #262626;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.t-title span {
+  font-size: 1.2rem;
+  padding: 0 10px 0 0;
+}
+
+.t-text {
+  color: #000;
+  margin: 5px 0 0 0;
+}
+
+.toast.active {
+  opacity: 1;
+  visibility: visible;
+}

@@ -3,7 +3,7 @@ console.log('coding is ready');
 import { isValid, formatMoney, getTotal, clearForm } from './utils';
 import './styles.css';
 import { buildDeleteLinks, buildEditLinks, assignCaretEvent } from './events';
-import { updateData, getData } from './api';
+import { updateData, getData, getCategories } from './api';
 import { displayCheapestItem, displayMostExpensive } from './items';
 import { addSvg, addEdit } from './svg';
 
@@ -13,6 +13,16 @@ window.addEventListener('onDataLoaded', () => {
   console.log('onDataLoaded has been dispatched');
   runSampleCode();
 });
+const categoriesLoaded = new CustomEvent('onCategoriesLoaded');
+window.addEventListener('onCategoriesLoaded', () => {
+  runCategoryCode();
+});
+
+// create a toast container
+const toastContainer = document.createElement('div');
+toastContainer.id = 'toastContainer';
+toastContainer.classList.add('toast-container');
+document.body.appendChild(toastContainer);
 
 let data = [];
 
@@ -24,6 +34,7 @@ export const state = {
     price: 0,
     category: '',
   },
+  categories: [],
   priceSortDirection: 'top',
   nameSortDirection: 'top',
   sizeSortDirection: 'top',
@@ -44,15 +55,33 @@ export const getOurData = () => {
         window.dispatchEvent(dataLoaded);
         buildTable();
       } else {
-        console.log(j.msg);
+        createToast(j.msg, 'warning');
       }
     })
     .catch((err) => {
-      console.log(err);
+      createToast(err, 'Error');
     });
 };
 
 getOurData();
+
+const getOurCategories = () => {
+  getCategories()
+    .then((res) => {
+      const j = res.data;
+      if (j.error === 0) {
+        state.categories = j.data;
+        window.dispatchEvent(categoriesLoaded);
+      } else {
+        createToast(j.msg, 'Warning');
+      }
+    })
+    .catch((err) => {
+      createToast(err, 'Error');
+    });
+};
+
+getOurCategories();
 
 export let filteredData = data;
 
@@ -111,19 +140,6 @@ const buildFilterBox = () => {
   newSelect.addEventListener('change', handleFilterChange);
 };
 
-const createItemCategory = () => {
-  const categories = data.unique('category');
-  let html = `<select id="category"><option value="0">Select a Category</option>`;
-  categories.map((c) => {
-    html += `<option value="${c}">${c}</option>`;
-  });
-  html += '</select';
-  document.getElementById('item-category').innerHTML = html;
-  const newSelect = document.getElementById('category');
-  newSelect.addEventListener('change', changeState);
-};
-createItemCategory();
-
 export const buildTable = () => {
   let html = `<table style="width: 90%; margin: 20px auto; color: #000">`;
   html += `<tr>`;
@@ -150,8 +166,7 @@ export const buildTable = () => {
   displayCheapestItem();
   displayMostExpensive();
   addSvg();
-  buildFilterBox();
-  createItemCategory();
+  //buildFilterBox();
   assignCaretEvent();
   addEdit();
 };
@@ -192,6 +207,8 @@ const saveButton = document.getElementById('save-item');
 saveButton.addEventListener('click', saveItem);
 
 function runSampleCode() {
+  createToast('running sample code');
+  buildFilterBox();
   // lets add curry to the mix
   const filterData = (property) => {
     return function (value) {
@@ -203,9 +220,9 @@ function runSampleCode() {
   const fruits = curriedFilter('fruit');
   const bevs = curriedFilter('beverages');
   const candy = curriedFilter('candy');
-  console.log('fruits', fruits);
-  console.log('bevs', bevs);
-  console.log('candy', candy);
+  createToast([...fruits], 'fruits');
+  createToast([...bevs], 'bevs');
+  createToast([...candy], 'candy');
 
   const findCategoryMostExpensiveItem = (array) => {
     return array.reduce((acc, cur) => {
@@ -224,3 +241,61 @@ function runSampleCode() {
   )('beverages');
   console.log(pipedFn);
 }
+
+function runCategoryCode() {
+  const createItemCategory = () => {
+    let html = `<select id="category"><option value="0">Select a Category</option>`;
+    state.categories.map((c) => {
+      html += `<option value="${c.id}">${c.category}</option>`;
+    });
+    html += '</select';
+    document.getElementById('item-category').innerHTML = html;
+    const newSelect = document.getElementById('category');
+    newSelect.addEventListener('change', changeState);
+  };
+  createItemCategory();
+}
+
+const createToast = (text, title = '', duration = 4000, type) => {
+  const toastElem = document.createElement('div');
+  toastElem.classList.add('toast');
+  if (type) toastElem.classList.add(type);
+
+  const titleElem = document.createElement('p');
+  titleElem.classList.add('t-title');
+  titleElem.innerHTML = title;
+  toastElem.appendChild(titleElem);
+
+  const textElem = document.createElement('p');
+  textElem.classList.add('t-text');
+
+  if (Array.isArray(text)) {
+    const s = text
+      .map((s) => {
+        if (typeof s == 'object') {
+          return s.name;
+        } else {
+          return s;
+        }
+      })
+      .join(', ');
+    textElem.innerHTML = s;
+  } else {
+    textElem.innerHTML = text;
+  }
+  toastElem.appendChild(textElem);
+
+  const toastContainer = document.getElementById('toastContainer');
+  toastContainer.appendChild(toastElem);
+
+  setTimeout(() => {
+    toastElem.classList.add('active');
+  }, 1);
+
+  setTimeout(() => {
+    toastElem.classList.remove('active');
+    setTimeout(() => {
+      toastElem.remove();
+    }, 350);
+  }, duration);
+};
