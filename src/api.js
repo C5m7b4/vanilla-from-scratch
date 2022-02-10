@@ -45,7 +45,19 @@ export async function getData() {
     headers: {
       'Content-Type': 'application/json',
     },
-    url: 'http://localhost:3000',
+    url: 'http://localhost:3000/products',
+  });
+  return json;
+}
+
+export async function getCategories() {
+  let json = await avion({
+    method: 'GET',
+    cors: true,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    url: 'http://localhost:3000/categories',
   });
   return json;
 }
