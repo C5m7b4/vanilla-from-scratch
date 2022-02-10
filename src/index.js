@@ -189,14 +189,19 @@ buildDeleteLinks();
 buildEditLinks();
 
 const saveItem = () => {
-  const copiedItems = [...state.items, state.currentItem];
-  state.items = copiedItems;
-  filteredData = copiedItems;
-  buildTable();
+  // const copiedItems = [...state.items, state.currentItem];
+  // state.items = copiedItems;
+  // filteredData = copiedItems;
+  // buildTable();
   clearForm();
   updateData()
     .then((res) => {
-      console.log(res);
+      const j = res.data;
+      if (j.error === 0) {
+        getOurData();
+      } else {
+        createToast(j.msg, 'Warning');
+      }
     })
     .catch((err) => {
       console.log(err);
