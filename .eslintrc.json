@@ -7,7 +7,8 @@
   "rules":{
     "no-console": 0,
     "no-debugger": 1,
-    "no-unused-vars": 1
+    "no-unused-vars": 1,
+    "no-import-assign": 0
   },
   "parserOptions": {
     "ecmaVersion": 2021,
