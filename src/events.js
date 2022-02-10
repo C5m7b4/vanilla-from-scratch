@@ -74,14 +74,12 @@ export const editItem = (id) => {
   priceInput.step = 0.05;
   price.appendChild(priceInput);
 
-  const uniqueCategories = state.items.unique('category');
-
   const category = row.cells[3];
   category.innerHTML = '';
   const categorySelect = document.createElement('select');
   categorySelect.id = 'categoryid';
-  uniqueCategories.map((c) => {
-    categorySelect.options.add(new Option(c, c));
+  state.categories.map((c) => {
+    categorySelect.options.add(new Option(c.category, c.id));
   });
 
   category.appendChild(categorySelect);
