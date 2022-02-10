@@ -1,4 +1,10 @@
-import { state, setFilteredData, buildTable, filteredData } from './index';
+import {
+  state,
+  setFilteredData,
+  buildTable,
+  filteredData,
+  getOurData,
+} from './index';
 import { saveEdits } from './api';
 import { sortData } from './utils';
 
@@ -135,7 +141,7 @@ const handleEditSave = () => {
         // reset the state after the edit completes
         state.isEditing = false;
         state.editingId = 0;
-        buildTable();
+        getOurData();
       } else {
         console.log(j.msg);
       }

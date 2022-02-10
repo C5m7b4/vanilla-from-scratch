@@ -33,22 +33,26 @@ export const state = {
   editingId: 0,
 };
 
-getData()
-  .then((res) => {
-    const j = res.data;
-    if (j.error === 0) {
-      data = j.data;
-      filteredData = j.data;
-      state.items = j.data;
-      window.dispatchEvent(dataLoaded);
-      buildTable();
-    } else {
-      console.log(j.msg);
-    }
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+export const getOurData = () => {
+  getData()
+    .then((res) => {
+      const j = res.data;
+      if (j.error === 0) {
+        data = j.data;
+        filteredData = j.data;
+        state.items = j.data;
+        window.dispatchEvent(dataLoaded);
+        buildTable();
+      } else {
+        console.log(j.msg);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+getOurData();
 
 export let filteredData = data;
 

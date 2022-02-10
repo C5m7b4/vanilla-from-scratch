@@ -25,7 +25,9 @@ export const getTotal = () => {
 
 export const clearForm = () => {
   Object.keys(state.currentItem).map((key) => {
-    document.getElementById(key).value = '';
+    if (key != 'id') {
+      document.getElementById(key).value = '';
+    }
   });
 };
 
